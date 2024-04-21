@@ -5,8 +5,15 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/wave"
+    android:background="@drawable/gradient"
     tools:context=".MainActivity">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/wave"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -36,10 +43,13 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <EditText
-            android:layout_width="match_parent"
+            android:layout_width="388dp"
             android:layout_height="wrap_content"
+            android:inputType="number"
+            android:autofillHints="none"
             android:background="@color/white"
             android:hint="@string/input_code"
+            android:textColorHint="@color/edit_text"
             android:fontFamily="@font/alata"
             android:textAlignment="center"
             android:textSize="20sp"
