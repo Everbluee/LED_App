@@ -3,4 +3,7 @@
     <string name="send_data">Wyślij dane</string>
     <string name="connect_device">Połącz z urządzeniem</string>
     <string name="input_code">Wprowadź kod</string>
+    <string name="informacje">Informacje</string>
+    <string name="animacje">Animacje</string>
+    <string name="kolory">Kolory</string>
 </resources>
