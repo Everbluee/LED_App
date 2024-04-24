@@ -32,7 +32,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bluetoothSocket: BluetoothSocket
 
     private lateinit var sendButton: Button
-
+    private lateinit var colorButton: Button
+    private lateinit var animButton: Button
     // UUID do nawiązywania połączenia z mikrokontrolerem
     private val deviceUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
 
@@ -105,7 +106,18 @@ class MainActivity : AppCompatActivity() {
         sendButton.setOnClickListener {
             sendData("Twoje dane do wysłania")
         }
-
+        //Obsługa przycisku colorButton (przeniesienie do aktywności ColoursActivity)
+        colorButton = findViewById(R.id.colorButton)
+        colorButton.setOnClickListener {
+            val intent = Intent(this, ColoursActivity::class.java)
+            startActivity(intent)
+        }
+        //Obsługa przycisku animButton (przeniesienie do aktywności AnimationActivity)
+        animButton = findViewById(R.id.animButton)
+        animButton.setOnClickListener {
+            val intent = Intent(this, AnimationActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 
