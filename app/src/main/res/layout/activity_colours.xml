@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,35 +6,50 @@
     android:layout_height="match_parent"
     tools:context=".ColoursActivity">
 
-    <LinearLayout
+    <Button
+        android:id="@+id/backPress"
+        android:layout_width="63dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:background="@drawable/ic_arrow_back"
+        android:contentDescription="Strzałka cofająca"
+        android:onClick="onBackPressed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#424242"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="-161dp"
-        tools:layout_editor_absoluteY="84dp"> <!-- Szary kolor tła -->
-        <Button
-            android:id="@+id/backPress"
-            android:layout_width="63dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:background="@drawable/ic_arrow_back"
-            android:contentDescription="Strzałka cofająca"
-            android:onClick="onBackPressed"
-            android:tint="@color/white"/>
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/press_start_2p"
+        android:gravity="center"
+        android:text="Paleta Kolorów"
+        android:textColor="@color/button"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/backPress"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:padding="16dp"
-            android:text="Paleta kolorów"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+    <ImageView
+        android:id="@+id/colorWheel"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:src="@drawable/color_wheel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView"
+        app:layout_constraintVertical_bias="0.157"/>
 
-        <!-- Tutaj możesz dodać inne widoki lub elementy -->
-
-    </LinearLayout>
-
+    <ImageView
+        android:id="@+id/colorIndicator"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:src="@drawable/color_indicator"
+        app:layout_constraintBottom_toBottomOf="@id/colorWheel"
+        app:layout_constraintEnd_toEndOf="@id/colorWheel"
+        app:layout_constraintStart_toStartOf="@id/colorWheel"
+        app:layout_constraintTop_toTopOf="@id/colorWheel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
