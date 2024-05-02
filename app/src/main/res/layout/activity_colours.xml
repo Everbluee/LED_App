@@ -8,7 +8,7 @@
 
     <Button
         android:id="@+id/backPress"
-        android:layout_width="63dp"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:background="@drawable/ic_arrow_back"

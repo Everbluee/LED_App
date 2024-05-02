@@ -6,4 +6,10 @@
     <string name="informacje">Informacje</string>
     <string name="animacje">Animacje</string>
     <string name="kolory">Kolory</string>
+    <string name="animacjeTitle">Animacje</string>
+    <string name="backpressbutton">BackPressButton</string>
+    <string name="animacja_1">Animacja 1</string>
+    <string name="animacja_2">Animacja 2</string>
+    <string name="animacja_3">Animacja 3</string>
+    <string name="animacja_4">Animacja 4</string>
 </resources>
