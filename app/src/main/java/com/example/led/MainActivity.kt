@@ -63,12 +63,6 @@ class MainActivity : AppCompatActivity() {
             Log.i("BluetoothAdapter", "Adapter Bluetooth niemożliwy")
             return
         }
-        //BLE
-//        if (!packageManager.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-//            Toast.makeText(this, "Twoje urządzenie nie obsługuje Bluetooth Low Energy", Toast.LENGTH_SHORT).show()
-//            finish()
-//            return
-//        }
 
         // Sprawdzenie uprawnień do Bluetooth
         if (checkSelfPermission(Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED
@@ -101,6 +95,8 @@ class MainActivity : AppCompatActivity() {
             Log.i("BluetoothConnection", "Nawiązano połączenie z urządzeniem Bluetooth")
         }
 
+        //*********** BUTTONS ***************
+
         // Obsługa przycisku wysyłania danych
         sendButton = findViewById(R.id.sendButton)
         sendButton.setOnClickListener {
@@ -119,7 +115,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
 
     private fun doSomeOperations() {
         // Tutaj możesz umieścić operacje do wykonania po pomyślnym uruchomieniu aktywności,
@@ -186,79 +181,3 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-
-
-
-// ********************** GATT - BLE ****************************
-//    private fun doSomeOperations() {
-//        Log.i("BluetoothOP", "Aktywność uruchomiona, szukanie urządzeń Bluetooth LE")
-//        findBLEDevice()
-//    }
-//
-//    private fun findBLEDevice() {
-//        bluetoothAdapter?.startLeScan { device, rssi, _ ->
-//            if (device.name == "NazwaTwojegoUrządzenia") { // Zmień na nazwę Twojego urządzenia
-//                bluetoothAdapter?.stopLeScan { }
-//                bluetoothDevice = device
-//                connectToDevice()
-//            }
-//        }
-//    }
-//
-//    private fun connectToDevice() {
-//        try {
-//            bluetoothDevice?.connectGatt(this, false, gattCallback)
-//        } catch (e: IOException) {
-//            Toast.makeText(this, "Błąd połączenia z urządzeniem Bluetooth", Toast.LENGTH_SHORT).show()
-//            e.printStackTrace()
-//        }
-//    }
-//
-//    private val gattCallback = object : BluetoothGattCallback() {
-//        override fun onConnectionStateChange(gatt: BluetoothGatt?, status: Int, newState: Int) {
-//            if (newState == BluetoothProfile.STATE_CONNECTED) {
-//                // Połączono z urządzeniem, możesz rozpocząć przesyłanie danych
-//                Log.i("Bluetooth", "Połączono z urządzeniem Bluetooth")
-//            } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-//                // Rozłączono z urządzeniem
-//                Log.i("Bluetooth", "Rozłączono z urządzeniem Bluetooth")
-//            }
-//        }
-//        override fun onServicesDiscovered(gatt: BluetoothGatt?, status: Int) {
-//            super.onServicesDiscovered(gatt, status)
-//            if (status == BluetoothGatt.GATT_SUCCESS) {
-//                // Usługi odkryte, możemy przeszukać charakterystyki
-//                Log.i(TAG, "Services discovered.")
-//                val services = gatt?.services
-//                services?.forEach { service ->
-//                    Log.i(TAG, "Service UUID: ${service.uuid}")
-//                    val characteristics = service.characteristics
-//                    characteristics.forEach { characteristic ->
-//                        Log.i(TAG, "Characteristic UUID: ${characteristic.uuid}")
-//                        BluetoothGatt.readCharacteristic(characteristic)
-//                        // Tutaj możesz wykonać odpowiednie operacje na charakterystykach, np. odczyt lub zapis
-//                    }
-//                }
-//            } else {
-//                Log.e(TAG, "onServicesDiscovered received: $status")
-//            }
-//        }
-//    }
-//
-//    private var bluetoothGatt: BluetoothGatt? = null
-//
-//    private fun sendData(data: String) {
-//        bluetoothGatt?.let { gatt ->
-//            val service = gatt.getService(serviceUUID)
-//            val characteristic = service?.getCharacteristic(characteristicUUID)
-//            characteristic?.setValue(data.toByteArray())
-//            gatt.writeCharacteristic(characteristic)
-//        }
-//    }
-//
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        bluetoothGatt?.disconnect()
-//        bluetoothGatt?.close()
-//        bluetoothGatt = null
-//    }
