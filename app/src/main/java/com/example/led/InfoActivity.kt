@@ -21,7 +21,7 @@ class InfoActivity : AppCompatActivity() {
         }
 
         //Obsługa przycisku backButton
-        backButton = this.findViewById<ImageButton>(R.id.backButtonAnim)
+        backButton = findViewById(R.id.backButtonInfo)
         backButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
