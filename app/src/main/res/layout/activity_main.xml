@@ -102,6 +102,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <EditText
+            android:id="@+id/dataInput"
             android:layout_width="388dp"
             android:layout_height="wrap_content"
             android:inputType="number"

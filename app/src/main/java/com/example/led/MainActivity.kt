@@ -1,6 +1,7 @@
 package com.example.led
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
@@ -12,6 +13,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
@@ -28,15 +30,22 @@ import java.util.UUID
 class MainActivity : AppCompatActivity() {
 
     private lateinit var bluetoothManager: BluetoothManager
-    private var bluetoothAdapter: BluetoothAdapter? = null
     private lateinit var bluetoothSocket: BluetoothSocket
+    private var bluetoothAdapter: BluetoothAdapter? = null
 
-    private lateinit var sendButton: Button
-    private lateinit var colorButton: Button
-    private lateinit var animButton: Button
+    private var sendButton: Button = findViewById(R.id.sendButton)
+    private var colorButton: Button = findViewById(R.id.colorButton)
+    private var animButton: Button = findViewById(R.id.animButton)
+    private var infoButton: Button = findViewById(R.id.infoButton)
+    private var connectButton: Button = findViewById(R.id.connectButton)
+
+    private var dataInput: EditText = findViewById(R.id.dataInput)
+    private var dataToSend: String = dataInput.text.toString()
+    private lateinit var macAddress: String
     // UUID do nawiązywania połączenia z mikrokontrolerem
     private val deviceUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
 
+    @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.i("OnCreate", "onCreate Evoked")
         super.onCreate(savedInstanceState)
@@ -66,8 +75,7 @@ class MainActivity : AppCompatActivity() {
 
         // Sprawdzenie uprawnień do Bluetooth
         if (checkSelfPermission(Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED
-            || checkSelfPermission(Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED)
-            {
+            || checkSelfPermission(Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(arrayOf(Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN), 1)
                 Log.i("BluetoothPermission", "Uprawnienia Bluetooth są aktywowane")
             }
@@ -76,11 +84,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         Log.i("OnCreate", "Poza checkiem z uprawnieniami. sprawdzam czy adapter jest enabled")
-        var enableBluetoothLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+        val enableBluetoothLauncher = registerForActivityResult(StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 // Bluetooth has been enabled, you can proceed with your operations here
-                doSomeOperations()
                 Log.i("Bluetooth", "Bluetooth enabled successfully")
+                connectButton.setBackgroundColor(R.color.button)
+                // doSomeOperations()
             } else {
                 // Bluetooth enabling was either cancelled or failed
                 Log.e("Bluetooth", "Failed to enable Bluetooth")
@@ -95,38 +104,46 @@ class MainActivity : AppCompatActivity() {
             Log.i("BluetoothConnection", "Nawiązano połączenie z urządzeniem Bluetooth")
         }
 
+
         //*********** BUTTONS ***************
 
         // Obsługa przycisku wysyłania danych
-        sendButton = findViewById(R.id.sendButton)
         sendButton.setOnClickListener {
-            sendData("Twoje dane do wysłania")
+            sendData(dataToSend)
         }
         //Obsługa przycisku colorButton (przeniesienie do aktywności ColoursActivity)
-        colorButton = findViewById(R.id.colorButton)
         colorButton.setOnClickListener {
             val intent = Intent(this, ColoursActivity::class.java)
             startActivity(intent)
         }
         //Obsługa przycisku animButton (przeniesienie do aktywności AnimationActivity)
-        animButton = findViewById(R.id.animButton)
         animButton.setOnClickListener {
             val intent = Intent(this, AnimationActivity::class.java)
             startActivity(intent)
         }
+        //Obsługa przycisku infoButton (przeniesienie do aktywności InfoActivity)
+        infoButton.setOnClickListener {
+            val intent = Intent(this, InfoActivity::class.java)
+            startActivity(intent)
+        }
+        //Obsługa przycisku connectButton (połączenie z urządzeniem poprzez Bluetooth)
+        connectButton.setOnClickListener {
+            Log.i("BluetoothOP", "Aktywność uruchomiona, łączenie z urządzeniem Bluetooth")
+            connectToDevice()
+        }
     }
 
-    private fun doSomeOperations() {
-        // Tutaj możesz umieścić operacje do wykonania po pomyślnym uruchomieniu aktywności,
-        // np. próba nawiązania połączenia Bluetooth
-        Log.i("BluetoothOP", "Aktywność uruchomiona, łączenie z urządzeniem Bluetooth")
-        connectToDevice()
-    }
+//    private fun doSomeOperations() {
+//        // Tutaj możesz umieścić operacje do wykonania po pomyślnym uruchomieniu aktywności,
+//        // np. próba nawiązania połączenia Bluetooth
+//        Log.i("BluetoothOP", "Aktywność uruchomiona, łączenie z urządzeniem Bluetooth")
+//        connectToDevice()
+//    }
 
     // Metoda do nawiązywania połączenia z urządzeniem Bluetooth
     private fun connectToDevice() {
         val device: BluetoothDevice? =
-            bluetoothAdapter?.getRemoteDevice("Adres MAC Twojego mikrokontrolera") // Zmień na adres MAC Twojego mikrokontrolera
+            bluetoothAdapter?.getRemoteDevice(macAddress) // Zmień na adres MAC Twojego mikrokontrolera
         try {
             bluetoothSocket = device?.createRfcommSocketToServiceRecord(deviceUUID)
                 ?: throw IOException("Bluetooth socket is null")
@@ -135,12 +152,6 @@ class MainActivity : AppCompatActivity() {
                     Manifest.permission.BLUETOOTH_CONNECT
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission.
                 requestPermissions(arrayOf(Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN), 1)
                 Log.i("BluetoothPermission", "Uprawnienia Bluetooth są aktywowane (2)")
                 return
