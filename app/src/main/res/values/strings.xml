@@ -16,4 +16,9 @@
     <string name="animacja_6">Animacja 6</string>
     <string name="obecna_animacja">Obecna animacja:</string>
     <string name="info">Info</string>
+    <string name="opis">Aplikacja do sterowania matrycą LED</string>
+    <string name="log_first_msg">Uruchomiono aplikację.</string>
+    <string name="log">LOG:</string>
+    <string name="status">Status:</string>
+    <string name="adres_mac">Adres MAC:</string>
 </resources>

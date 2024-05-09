@@ -24,22 +24,22 @@
         android:textAlignment="center"
         android:textColor="@color/lily"
         android:textSize="40sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:background="@drawable/anim_bg"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/linearLayout">
+
             <LinearLayout
                 android:id="@id/linearLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/linearLayout">
+                android:orientation="horizontal">
+
                 <ImageButton
                     android:id="@+id/backButtonInfo"
                     android:layout_width="wrap_content"
@@ -47,10 +47,68 @@
                     android:background="@color/material_on_background_disabled"
                     android:contentDescription="@string/backpressbutton"
                     android:padding="5dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_arrow_back" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/alata"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/opis"
+                    android:textColor="@color/button"
+                    android:textSize="20sp" />
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginVertical="10dp"
+                android:background="@color/card_background"
+                android:fontFamily="@font/alata"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="@string/adres_mac"
+                android:textColor="@color/button"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginVertical="10dp"
+                android:background="@color/card_background"
+                android:fontFamily="@font/alata"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="@string/status"
+                android:textColor="@color/button"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/button"
+                android:fontFamily="@font/press_start_2p"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="@string/log"
+                android:textColor="@color/lily"
+                android:textSize="20sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/logRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="0dp"
+                android:background="@color/card_background"
+                android:clipToPadding="false"
+                android:fillViewport="false"
+                android:nestedScrollingEnabled="true"
+                android:scrollbarStyle="outsideOverlay"
+                tools:itemCount="0"/>
         </LinearLayout>
     </LinearLayout>
 

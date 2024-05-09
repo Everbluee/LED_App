@@ -138,7 +138,8 @@
             android:textSize="20sp"
             android:backgroundTint="@color/button"
             android:paddingHorizontal="30dp"
-            android:paddingVertical="15dp" />
+            android:paddingVertical="15dp"
+            android:enabled="false"/>
 
     </LinearLayout>
 

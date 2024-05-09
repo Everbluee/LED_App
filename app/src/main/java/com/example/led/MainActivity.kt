@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothManager
 import android.bluetooth.BluetoothSocket
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -29,6 +30,7 @@ import java.util.UUID
 //import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var bluetoothStateReceiver: BluetoothBR
     private lateinit var bluetoothCoroutineScope: CoroutineScope
 
     private lateinit var bluetoothManager: BluetoothManager
@@ -49,6 +51,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.i("OnCreate", "onCreate Evoked")
+        LogStorage.logs.add(resources.getString(R.string.log_first_msg))
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
@@ -58,54 +61,11 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        bluetoothStateReceiver = BluetoothBR()
         bluetoothCoroutineScope = CoroutineScope(Dispatchers.IO)
-
-        Log.i("OnCreate", "View shown")
 
         bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         bluetoothAdapter  = bluetoothManager.adapter
-
-        Log.i("OnCreate", "Manager & Adapter Evoked")
-
-        // Sprawdzenie czy urządzenie obsługuje Bluetooth
-        if (bluetoothAdapter == null) {
-            Toast.makeText(this, "Twoje urządzenie nie obsługuje Bluetooth", Toast.LENGTH_SHORT)
-                .show()
-            finish()
-            Log.i("BluetoothAdapter", "Adapter Bluetooth niemożliwy")
-            return
-        }
-
-        // Sprawdzenie uprawnień do Bluetooth
-        if (checkSelfPermission(Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED
-            || checkSelfPermission(Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(arrayOf(Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN), 1)
-                Log.i("BluetoothPermission", "Uprawnienia Bluetooth są aktywowane")
-            }
-        else {
-            Log.i("BluetoothPermission", "Uprawnienia Bluetooth są aktywne")
-        }
-
-        Log.i("OnCreate", "Poza checkiem z uprawnieniami. sprawdzam czy adapter jest enabled")
-        val enableBluetoothLauncher = registerForActivityResult(StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                // Bluetooth has been enabled, you can proceed with your operations here
-                Log.i("Bluetooth", "Bluetooth enabled successfully")
-                connectButton.setBackgroundColor(R.color.button)
-                // doSomeOperations()
-            } else {
-                // Bluetooth enabling was either cancelled or failed
-                Log.e("Bluetooth", "Failed to enable Bluetooth")
-            }
-        }
-
-        // Sprawdzenie czy Bluetooth jest włączone
-        if (bluetoothAdapter?.isEnabled == false) {
-            Log.i("BluetoothConnection", "Nawiązuję połączenie z urządzeniem Bluetooth")
-            val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-            enableBluetoothLauncher.launch(enableBtIntent)
-            Log.i("BluetoothConnection", "Nawiązano połączenie z urządzeniem Bluetooth")
-        }
 
         dataInput = findViewById(R.id.dataInput)
         var dataToSend: String = dataInput.text.toString()
@@ -139,14 +99,56 @@ class MainActivity : AppCompatActivity() {
             Log.i("BluetoothOP", "Aktywność uruchomiona, łączenie z urządzeniem Bluetooth")
             connectToDevice()
         }
+
+        //*************** BLUETOOTH *******************
+
+        // Sprawdzenie czy urządzenie obsługuje Bluetooth
+        if (bluetoothAdapter == null) {
+            Toast.makeText(this, "Twoje urządzenie nie obsługuje Bluetooth", Toast.LENGTH_SHORT)
+                .show()
+            finish()
+            Log.i("BluetoothAdapter", "Adapter Bluetooth niemożliwy")
+            return
+        }
+
+        // Sprawdzenie uprawnień do Bluetooth
+        if (checkSelfPermission(Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED
+            || checkSelfPermission(Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(arrayOf(Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN), 1)
+                Log.i("BluetoothPermission", "Uprawnienia Bluetooth są aktywowane")
+            }
+        else {
+            Log.i("BluetoothPermission", "Uprawnienia Bluetooth są aktywne")
+        }
+
+        Log.i("OnCreate", "Poza checkiem z uprawnieniami. Sprawdzam czy adapter jest aktywny")
+        val enableBluetoothLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                // Bluetooth has been enabled, you can proceed with your operations here
+                Log.i("Bluetooth", "Bluetooth włączony")
+                // doSomeOperations()
+                connectButton.isEnabled = true
+            } else {
+                // Bluetooth enabling was either cancelled or failed
+                Log.e("Bluetooth", "Nie można włączyć Bluetooth")
+                connectButton.isEnabled = false
+            }
+        }
+
+        // Sprawdzenie czy Bluetooth jest włączone
+        if (bluetoothAdapter?.isEnabled == false) {
+            Log.i("BluetoothConnection", "Nawiązuję połączenie z urządzeniem Bluetooth")
+            val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+            enableBluetoothLauncher.launch(enableBtIntent)
+            connectButton.isEnabled = true
+            Log.i("BluetoothConnection", "Nawiązano połączenie z urządzeniem Bluetooth")
+        } else {
+            connectButton.isEnabled = true
+        }
+
+
     }
 
-//    private fun doSomeOperations() {
-//        // Tutaj możesz umieścić operacje do wykonania po pomyślnym uruchomieniu aktywności,
-//        // np. próba nawiązania połączenia Bluetooth
-//        Log.i("BluetoothOP", "Aktywność uruchomiona, łączenie z urządzeniem Bluetooth")
-//        connectToDevice()
-//    }
     fun getBluetoothDevice(): BluetoothDevice? {
         return try {
             if (!::macAddress.isInitialized) {
@@ -209,6 +211,25 @@ class MainActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Brak połączenia Bluetooth", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun updateButtonState(isEnabled: Boolean) {
+        if (isEnabled) {
+            connectButton.isEnabled = true
+        } else {
+            connectButton.isEnabled = false
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val filter = IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED)
+        registerReceiver(bluetoothStateReceiver, filter)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(bluetoothStateReceiver)
     }
 
     override fun onDestroy() {

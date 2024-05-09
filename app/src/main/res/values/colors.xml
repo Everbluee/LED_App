@@ -6,9 +6,11 @@
     <color name="lily">#E5D2E8</color>
     <color name="pink">#ECD9EF</color>
     <color name="button">#4F4350</color>
+    <color name="inactive_button">#6F6A70</color>
     <color name="light_blue">#E4EEFF</color>
     <color name="gray_blue">#8090AA</color>
     <color name="blue">#576D8F</color>
     <color name="edit_text">#8C8C8C</color>
     <color name="card_background">#34595959</color>
+    <color name="log_background">#97232323</color>
 </resources>
