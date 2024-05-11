@@ -27,6 +27,6 @@ class LogAdapter (private val logs: MutableList<String>) :
 
     fun addLog(log: String) {
         logs.add(log)
-        notifyItemInserted(logs.size - 1)
+        notifyItemInserted(logs.lastIndex - 1)
     }
 }

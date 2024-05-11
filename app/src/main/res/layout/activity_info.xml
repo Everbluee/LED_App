@@ -61,6 +61,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/macTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="30dp"
@@ -74,6 +75,7 @@
                 android:textSize="20sp" />
 
             <TextView
+                android:id="@+id/statusTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="30dp"
@@ -100,6 +102,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/logRecyclerView"
+                android:contentDescription="@string/komunikaty_systemowe"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:layout_marginBottom="0dp"

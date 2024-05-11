@@ -30,20 +30,24 @@ import java.util.UUID
 //import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var bluetoothStateReceiver: BluetoothBR
-    private lateinit var bluetoothCoroutineScope: CoroutineScope
-
-    private lateinit var bluetoothManager: BluetoothManager
+    private var bluetoothStateReceiver: BluetoothBR = BluetoothBR()
     private var bluetoothAdapter: BluetoothAdapter? = null
+    private lateinit var bluetoothCoroutineScope: CoroutineScope
+    private lateinit var bluetoothManager: BluetoothManager
     private lateinit var bluetoothSocket: BluetoothSocket
 
     private lateinit var sendButton: Button
-    private lateinit var colorButton: Button
+    private lateinit var colourButton: Button
     private lateinit var animButton: Button
     private lateinit var infoButton: Button
     private lateinit var connectButton: Button
 
+    private lateinit var intentColour: Intent
+    private lateinit var intentInfo: Intent
+    private lateinit var intentAnimation: Intent
+
     private lateinit var dataInput: EditText
+    //TODO: Zainicjalizować adres MAC
     private lateinit var macAddress: String
     // UUID do nawiązywania połączenia z mikrokontrolerem
     private val deviceUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
@@ -51,7 +55,6 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.i("OnCreate", "onCreate Evoked")
-        LogStorage.logs.add(resources.getString(R.string.log_first_msg))
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
@@ -61,42 +64,44 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        bluetoothStateReceiver = BluetoothBR()
-        bluetoothCoroutineScope = CoroutineScope(Dispatchers.IO)
+        LogStorage.logs.add("Przejście do ekranu startowego ( $this )")
 
+        bluetoothCoroutineScope = CoroutineScope(Dispatchers.IO)
         bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         bluetoothAdapter  = bluetoothManager.adapter
 
+        //*********** INTENTS ***************
+        intentColour = Intent(this, ColoursActivity::class.java)
+        intentInfo = Intent(this, InfoActivity::class.java)
+        intentAnimation = Intent(this, AnimationActivity::class.java)
+
+        //*********** BUTTONS ***************
+        // Obsługa przycisku wysyłania danych
         dataInput = findViewById(R.id.dataInput)
         var dataToSend: String = dataInput.text.toString()
-        //*********** BUTTONS ***************
-
-        // Obsługa przycisku wysyłania danych
         sendButton = findViewById(R.id.sendButton)
         sendButton.setOnClickListener {
             sendData(dataToSend)
         }
         //Obsługa przycisku colorButton (przeniesienie do aktywności ColoursActivity)
-        colorButton = findViewById(R.id.colorButton)
-        colorButton.setOnClickListener {
-            val intent = Intent(this, ColoursActivity::class.java)
-            startActivity(intent)
+        colourButton = findViewById(R.id.colorButton)
+        colourButton.setOnClickListener {
+            startActivity(intentColour)
         }
         //Obsługa przycisku animButton (przeniesienie do aktywności AnimationActivity)
         animButton = findViewById(R.id.animButton)
         animButton.setOnClickListener {
-            val intent = Intent(this, AnimationActivity::class.java)
-            startActivity(intent)
+            startActivity(intentAnimation)
         }
         //Obsługa przycisku infoButton (przeniesienie do aktywności InfoActivity)
         infoButton = findViewById(R.id.infoButton)
         infoButton.setOnClickListener {
-            val intent = Intent(this, InfoActivity::class.java)
-            startActivity(intent)
+            startActivity(intentInfo)
         }
         connectButton = findViewById(R.id.connectButton)
         connectButton.setOnClickListener {
-            Log.i("BluetoothOP", "Aktywność uruchomiona, łączenie z urządzeniem Bluetooth")
+            Log.i("BluetoothOP", "Łączenie z urządzeniem Bluetooth...")
+            LogStorage.logs.add("Łączenie z urządzeniem Bluetooth... ( $this )")
             connectToDevice()
         }
 
@@ -106,8 +111,9 @@ class MainActivity : AppCompatActivity() {
         if (bluetoothAdapter == null) {
             Toast.makeText(this, "Twoje urządzenie nie obsługuje Bluetooth", Toast.LENGTH_SHORT)
                 .show()
+            Log.e("BluetoothAdapter", "Adapter Bluetooth niemożliwy")
+            LogStorage.logs.add("Twoje urządzenie nie obsługuje Bluetooth, nie można utworzyć adaptera ( $this )")
             finish()
-            Log.i("BluetoothAdapter", "Adapter Bluetooth niemożliwy")
             return
         }
 
@@ -116,9 +122,11 @@ class MainActivity : AppCompatActivity() {
             || checkSelfPermission(Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(arrayOf(Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN), 1)
                 Log.i("BluetoothPermission", "Uprawnienia Bluetooth są aktywowane")
+                LogStorage.logs.add("Uprawnienia Bluetooth są aktywowane... ( $this )")
             }
         else {
             Log.i("BluetoothPermission", "Uprawnienia Bluetooth są aktywne")
+            // LogStorage.logs.add("Uprawnienia Bluetooth są aktywne ( $this )")
         }
 
         Log.i("OnCreate", "Poza checkiem z uprawnieniami. Sprawdzam czy adapter jest aktywny")
@@ -126,37 +134,38 @@ class MainActivity : AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK) {
                 // Bluetooth has been enabled, you can proceed with your operations here
                 Log.i("Bluetooth", "Bluetooth włączony")
+                LogStorage.logs.add("Bluetooth został uruchomiony ( $this )")
                 // doSomeOperations()
                 connectButton.isEnabled = true
             } else {
                 // Bluetooth enabling was either cancelled or failed
                 Log.e("Bluetooth", "Nie można włączyć Bluetooth")
+                LogStorage.logs.add("Odmowa uruchomienia Bluetooth ( $this )")
                 connectButton.isEnabled = false
             }
         }
 
         // Sprawdzenie czy Bluetooth jest włączone
         if (bluetoothAdapter?.isEnabled == false) {
-            Log.i("BluetoothConnection", "Nawiązuję połączenie z urządzeniem Bluetooth")
+            Log.i("BluetoothConnection", "Próba uruchomienia Bluetooth")
+            LogStorage.logs.add("Próba uruchomienia Bluetooth... ( $this )")
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             enableBluetoothLauncher.launch(enableBtIntent)
-            connectButton.isEnabled = true
-            Log.i("BluetoothConnection", "Nawiązano połączenie z urządzeniem Bluetooth")
         } else {
             connectButton.isEnabled = true
         }
-
-
     }
 
-    fun getBluetoothDevice(): BluetoothDevice? {
+    private fun getBluetoothDevice(): BluetoothDevice? {
         return try {
             if (!::macAddress.isInitialized) {
-                throw UninitializedPropertyAccessException("MAC address has not been initialized.")
+                throw UninitializedPropertyAccessException("Adres MAC nie został zainicjalizowany.")
             }
+            intentInfo.putExtra("bt_mac", macAddress)
             bluetoothAdapter?.getRemoteDevice(macAddress)
         } catch (e: UninitializedPropertyAccessException) {
             println("Error: $e")
+            LogStorage.logs.add("Error: $e ( $this )")
             null
         }
     }
@@ -167,7 +176,7 @@ class MainActivity : AppCompatActivity() {
             try {
                 val device: BluetoothDevice? = getBluetoothDevice()
                 bluetoothSocket = device?.createRfcommSocketToServiceRecord(deviceUUID)
-                    ?: throw IOException("Bluetooth socket is null")
+                    ?: throw IOException("Bluetooth socket nie istnieje")
                 if (ActivityCompat.checkSelfPermission(this@MainActivity,
                         Manifest.permission.BLUETOOTH_CONNECT
                     ) != PackageManager.PERMISSION_GRANTED
@@ -183,15 +192,19 @@ class MainActivity : AppCompatActivity() {
                 }
                 bluetoothSocket.connect()
                 withContext(Dispatchers.Main) {
+                    LogStorage.logs.add("Połączono z urządzeniem Bluetooth ( $this )")
                     Toast.makeText(this@MainActivity,
                         "Połączono z urządzeniem Bluetooth", Toast.LENGTH_SHORT
                     ).show()
+                    intentInfo.putExtra("bt_conn", "Połączono")
                 }
             } catch (e: IOException) {
                 withContext(Dispatchers.Main) {
+                    LogStorage.logs.add("Błąd połączenia z urządzeniem Bluetooth ( $this )")
                     Toast.makeText(this@MainActivity,
                         "Błąd połączenia z urządzeniem Bluetooth", Toast.LENGTH_SHORT
                     ).show()
+                    intentInfo.putExtra("bt_conn", "Brak połączenia")
                 }
                 e.printStackTrace()
             }
@@ -203,22 +216,22 @@ class MainActivity : AppCompatActivity() {
         if (::bluetoothSocket.isInitialized && bluetoothSocket.isConnected) {
             try {
                 bluetoothSocket.outputStream.write(data.toByteArray())
+                LogStorage.logs.add("Dane wysłane: $data ( $this )")
                 Toast.makeText(this, "Dane wysłane: $data", Toast.LENGTH_SHORT).show()
             } catch (e: IOException) {
+                LogStorage.logs.add("Błąd podczas wysyłania danych ( $this )")
                 Toast.makeText(this, "Błąd podczas wysyłania danych", Toast.LENGTH_SHORT).show()
                 e.printStackTrace()
             }
         } else {
-            Toast.makeText(this, "Brak połączenia Bluetooth", Toast.LENGTH_SHORT).show()
+            LogStorage.logs.add("Nie można wysłać danych, brak połącznia Bluetooth ( $this )")
+            Toast.makeText(this, "Nie można wysłać danych, brak połączenia Bluetooth", Toast.LENGTH_SHORT).show()
         }
     }
 
+    // Aktualizacja stanu przycisku do łączenia się z urządzeniem
     fun updateButtonState(isEnabled: Boolean) {
-        if (isEnabled) {
-            connectButton.isEnabled = true
-        } else {
-            connectButton.isEnabled = false
-        }
+        connectButton.isEnabled = isEnabled
     }
 
     override fun onResume() {
@@ -237,11 +250,13 @@ class MainActivity : AppCompatActivity() {
         try {
             if (::bluetoothSocket.isInitialized && bluetoothSocket.isConnected) {
                 bluetoothSocket.close()
+                LogStorage.logs.add("Bluetooth Socket zamknięta ( $this )")
                 Log.i("BluetoothDestroy", "Bluetooth Socket zamknięta")
                 bluetoothCoroutineScope.cancel() // Anuluj korutynę, aby uniknąć wycieków pamięci
             }
         } catch (e: IOException) {
             e.printStackTrace()
+            LogStorage.logs.add("Bluetooth Socket nie może być zamknięta ( $this )")
             Log.i("BluetoothDestroy", "Bluetooth Socket nie może być zamknięta")
         }
     }
