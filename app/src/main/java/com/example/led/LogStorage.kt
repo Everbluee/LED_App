@@ -16,11 +16,10 @@ object LogStorage {
 
         override fun add(element: String): Boolean {
             val newIndex = size + 1 // Incrementing the index by 1
-            return internalList.add("[$newIndex] $element")
+            //return internalList.add("[$newIndex] $element")
+            return internalList.add(element)
         }
 
         override fun removeAt(index: Int): String = internalList.removeAt(index)
-
     }
-
 }

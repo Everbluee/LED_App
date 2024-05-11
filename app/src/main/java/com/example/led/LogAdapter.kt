@@ -9,6 +9,7 @@ class LogAdapter (private val logs: MutableList<String>) :
     RecyclerView.Adapter<LogAdapter.LogViewHolder>() {
     inner class LogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val logText: TextView = itemView.findViewById(R.id.logTextView)
+        val logIDText: TextView = itemView.findViewById(R.id.logIDTextView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LogViewHolder {
@@ -18,6 +19,8 @@ class LogAdapter (private val logs: MutableList<String>) :
 
     override fun onBindViewHolder(holder: LogViewHolder, position: Int) {
         val log = logs[position]
+        val id = "[$position]"
+        holder.logIDText.text = id
         holder.logText.text = log
     }
 
