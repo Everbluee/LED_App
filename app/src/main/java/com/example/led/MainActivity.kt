@@ -96,9 +96,13 @@ class MainActivity : AppCompatActivity() {
         //Obsługa przycisku infoButton (przeniesienie do aktywności InfoActivity)
         infoButton = findViewById(R.id.infoButton)
         infoButton.setOnClickListener {
-            if (::bluetoothSocket.isInitialized && bluetoothSocket.isConnected) {
+            if (::bluetoothSocket.isInitialized) {
                 intentInfo.putExtra("bt_mac", macAddress)
-                intentInfo.putExtra("bt_conn", "Połączono")
+                if (bluetoothSocket.isConnected) {
+                    intentInfo.putExtra("bt_conn", "Połączono")
+                } else {
+                    intentInfo.putExtra("bt_conn", "Nie połączono")
+                }
             } else {
                 intentInfo.putExtra("bt_mac", "brak")
                 intentInfo.putExtra("bt_conn", "Nie połączono")
