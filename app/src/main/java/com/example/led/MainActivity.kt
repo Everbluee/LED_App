@@ -1,7 +1,6 @@
 package com.example.led
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
@@ -26,9 +25,6 @@ import kotlinx.coroutines.*
 import java.io.IOException
 import java.util.UUID
 
-//import androidx.core.view.ViewCompat
-//import androidx.core.view.WindowInsetsCompat
-
 class MainActivity : AppCompatActivity() {
     private var bluetoothStateReceiver: BluetoothBR = BluetoothBR()
     private var bluetoothAdapter: BluetoothAdapter? = null
@@ -47,14 +43,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var intentAnimation: Intent
 
     private lateinit var dataInput: EditText
-    //TODO: Zainicjalizować adres MAC
     private lateinit var macAddress: String
+
     // UUID do nawiązywania połączenia z mikrokontrolerem
     private val deviceUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
 
-    @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.i("OnCreate", "onCreate Evoked")
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
@@ -63,6 +57,12 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        //Inicjalizacja adresu MAC
+        //Komp
+        //macAddress = "30:C9:AB:E1:40:84"
+        //Tel
+        //macAddress = "4C:02:20:34:EF:82"
 
         LogStorage.logs.add("Przejście do ekranu startowego ( $this )")
 
@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
         //*********** BUTTONS ***************
         // Obsługa przycisku wysyłania danych
         dataInput = findViewById(R.id.dataInput)
-        var dataToSend: String = dataInput.text.toString()
+        val dataToSend: String = dataInput.text.toString()
         sendButton = findViewById(R.id.sendButton)
         sendButton.setOnClickListener {
             sendData(dataToSend)
@@ -96,6 +96,13 @@ class MainActivity : AppCompatActivity() {
         //Obsługa przycisku infoButton (przeniesienie do aktywności InfoActivity)
         infoButton = findViewById(R.id.infoButton)
         infoButton.setOnClickListener {
+            if (::bluetoothSocket.isInitialized && bluetoothSocket.isConnected) {
+                intentInfo.putExtra("bt_mac", macAddress)
+                intentInfo.putExtra("bt_conn", "Połączono")
+            } else {
+                intentInfo.putExtra("bt_mac", "brak")
+                intentInfo.putExtra("bt_conn", "Nie połączono")
+            }
             startActivity(intentInfo)
         }
         connectButton = findViewById(R.id.connectButton)
@@ -119,14 +126,19 @@ class MainActivity : AppCompatActivity() {
 
         // Sprawdzenie uprawnień do Bluetooth
         if (checkSelfPermission(Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED
-            || checkSelfPermission(Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(arrayOf(Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN), 1)
+            || checkSelfPermission(Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED
+            || checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(
+                    arrayOf(
+                        Manifest.permission.BLUETOOTH,
+                        Manifest.permission.BLUETOOTH_ADMIN,
+                        Manifest.permission.BLUETOOTH_CONNECT), 1)
                 Log.i("BluetoothPermission", "Uprawnienia Bluetooth są aktywowane")
                 LogStorage.logs.add("Uprawnienia Bluetooth są aktywowane... ( $this )")
             }
         else {
             Log.i("BluetoothPermission", "Uprawnienia Bluetooth są aktywne")
-            // LogStorage.logs.add("Uprawnienia Bluetooth są aktywne ( $this )")
+            LogStorage.logs.add("Uprawnienia Bluetooth są aktywne ( $this )")
         }
 
         Log.i("OnCreate", "Poza checkiem z uprawnieniami. Sprawdzam czy adapter jest aktywny")
@@ -161,7 +173,6 @@ class MainActivity : AppCompatActivity() {
             if (!::macAddress.isInitialized) {
                 throw UninitializedPropertyAccessException("Adres MAC nie został zainicjalizowany.")
             }
-            intentInfo.putExtra("bt_mac", macAddress)
             bluetoothAdapter?.getRemoteDevice(macAddress)
         } catch (e: UninitializedPropertyAccessException) {
             println("Error: $e")
@@ -175,8 +186,9 @@ class MainActivity : AppCompatActivity() {
         bluetoothCoroutineScope.launch {
             try {
                 val device: BluetoothDevice? = getBluetoothDevice()
-                bluetoothSocket = device?.createRfcommSocketToServiceRecord(deviceUUID)
+                bluetoothSocket = device?.createInsecureRfcommSocketToServiceRecord(deviceUUID)
                     ?: throw IOException("Bluetooth socket nie istnieje")
+                Log.i("bt_socket", bluetoothSocket.toString())
                 if (ActivityCompat.checkSelfPermission(this@MainActivity,
                         Manifest.permission.BLUETOOTH_CONNECT
                     ) != PackageManager.PERMISSION_GRANTED
@@ -185,26 +197,35 @@ class MainActivity : AppCompatActivity() {
                         requestPermissions(
                             arrayOf(
                                 Manifest.permission.BLUETOOTH,
-                                Manifest.permission.BLUETOOTH_ADMIN
+                                Manifest.permission.BLUETOOTH_ADMIN,
+                                Manifest.permission.BLUETOOTH_CONNECT
                             ), 1)
                     }
                     return@launch
                 }
-                bluetoothSocket.connect()
-                withContext(Dispatchers.Main) {
-                    LogStorage.logs.add("Połączono z urządzeniem Bluetooth ( $this )")
-                    Toast.makeText(this@MainActivity,
-                        "Połączono z urządzeniem Bluetooth", Toast.LENGTH_SHORT
-                    ).show()
-                    intentInfo.putExtra("bt_conn", "Połączono")
+                try {
+                    bluetoothSocket.connect()
+                    Log.i("connectToDevice", "Połączenie z socketem")
+                    withContext(Dispatchers.Main) {
+                        LogStorage.logs.add("Połączono z urządzeniem Bluetooth ( $this )")
+                        Toast.makeText(this@MainActivity,
+                            "Połączono z urządzeniem Bluetooth", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: IOException) {
+                    Log.e("bt_socket", e.message.toString())
+                    try {
+                        Log.i("bt_socket", "trying fallback...")
+                        bluetoothSocket = (device.javaClass.getMethod("createRfcommSocket", Int::class.java).invoke(device, 1) as BluetoothSocket)
+                        bluetoothSocket.connect()
+                    } catch (e: Exception) {
+                        Log.e("bt_socket", "Nie można nawiązać połączenia")
+                    }
                 }
             } catch (e: IOException) {
                 withContext(Dispatchers.Main) {
                     LogStorage.logs.add("Błąd połączenia z urządzeniem Bluetooth ( $this )")
                     Toast.makeText(this@MainActivity,
-                        "Błąd połączenia z urządzeniem Bluetooth", Toast.LENGTH_SHORT
-                    ).show()
-                    intentInfo.putExtra("bt_conn", "Brak połączenia")
+                        "Błąd połączenia z urządzeniem Bluetooth", Toast.LENGTH_SHORT).show()
                 }
                 e.printStackTrace()
             }

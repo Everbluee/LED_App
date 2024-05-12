@@ -24,7 +24,7 @@ class AnimationActivity : AppCompatActivity() {
             insets
         }
 
-        LogStorage.logs.add("Przejście do ekranu animacji $this")
+        LogStorage.logs.add("Przejście do ekranu animacji ( $this )")
 
         //Obsługa przycisku backButton
         backButton = findViewById(R.id.backButtonAnim)

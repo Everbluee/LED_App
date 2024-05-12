@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.led"
-        minSdk = 26
+        minSdk = 30
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
