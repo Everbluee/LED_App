@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,50 +7,187 @@
     android:layout_height="match_parent"
     tools:context=".ColoursActivity">
 
-    <Button
-        android:id="@+id/backPress"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:background="@drawable/ic_arrow_back"
-        android:contentDescription="Strzałka cofająca"
-        android:onClick="onBackPressed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView"
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/press_start_2p"
-        android:gravity="center"
-        android:text="Paleta Kolorów"
-        android:textColor="@color/button"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/backPress"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/colorWheel"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:src="@drawable/color_wheel"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView"
-        app:layout_constraintVertical_bias="0.157"/>
+        <TextView
+            android:id="@+id/colourTitle"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/button"
+            android:fontFamily="@font/press_start_2p"
+            android:gravity="center"
+            android:padding="30dp"
+            android:text="@string/kolory"
+            android:textAlignment="center"
+            android:textColor="@color/lily"
+            android:textSize="40sp" />
 
-    <ImageView
-        android:id="@+id/colorIndicator"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
-        android:src="@drawable/color_indicator"
-        app:layout_constraintBottom_toBottomOf="@id/colorWheel"
-        app:layout_constraintEnd_toEndOf="@id/colorWheel"
-        app:layout_constraintStart_toStartOf="@id/colorWheel"
-        app:layout_constraintTop_toTopOf="@id/colorWheel" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/anim_bg">
 
+            <LinearLayout
+                android:id="@id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/backButtonAnim"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/backpressbutton"
+                    android:padding="5dp"
+                    app:srcCompat="@drawable/ic_arrow_back" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/alata"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="@string/wybierz_kolor"
+                    android:textColor="@color/button"
+                    android:textSize="25sp" />
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/colorWheel"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="228dp"
+                    android:src="@drawable/color_wheel"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+
+                <ImageView
+                    android:id="@+id/colorIndicator"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="20dp"
+                    android:src="@drawable/color_indicator"
+                    app:layout_constraintBottom_toBottomOf="@id/colorWheel"
+                    app:layout_constraintEnd_toEndOf="@id/colorWheel"
+                    app:layout_constraintHorizontal_bias="0.468"
+                    app:layout_constraintStart_toStartOf="@id/colorWheel"
+                    app:layout_constraintTop_toTopOf="@id/colorWheel"
+                    app:layout_constraintVertical_bias="0.507" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="329dp"
+                    android:layout_marginBottom="158dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="MissingConstraints">
+
+                    <Button
+                        android:id="@+id/redButton"
+                        style="@style/Widget.Material3.Button.Icon"
+                        android:layout_width="55dp"
+                        android:layout_height="60dp"
+                        android:layout_marginHorizontal="15dp"
+                        android:backgroundTint="@color/button"
+                        android:contentDescription="@string/red"
+                        android:padding="0dp"
+                        app:icon="@drawable/ic_r"
+                        app:iconGravity="textTop"
+                        app:iconPadding="0dp"
+                        app:iconSize="30dp" />
+
+                    <Button
+                        android:id="@+id/greenButton"
+                        style="@style/Widget.Material3.Button.Icon"
+                        android:layout_width="55dp"
+                        android:layout_height="60dp"
+                        android:layout_marginHorizontal="15dp"
+                        android:backgroundTint="@color/button"
+                        android:contentDescription="@string/green"
+                        android:padding="0dp"
+                        app:icon="@drawable/ic_g"
+                        app:iconGravity="textTop"
+                        app:iconPadding="0dp"
+                        app:iconSize="30dp" />
+
+                    <Button
+                        android:id="@+id/blueButton"
+                        style="@style/Widget.Material3.Button.Icon"
+                        android:layout_width="55dp"
+                        android:layout_height="60dp"
+                        android:layout_marginHorizontal="15dp"
+                        android:backgroundTint="@color/button"
+                        android:contentDescription="@string/blue"
+                        android:padding="0dp"
+                        app:icon="@drawable/ic_b"
+                        app:iconGravity="textTop"
+                        app:iconPadding="0dp"
+                        app:iconSize="30dp" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/colorDisplay"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="463dp"
+                    android:layout_marginBottom="4dp"
+                    android:background="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.498"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/selectedColorTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="399dp"
+                    android:layout_marginBottom="89dp"
+                    android:fontFamily="@font/alata"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:textColor="@color/button"
+                    android:textSize="25sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="MissingConstraints"
+                    tools:text="Wybrany kolor: #FFFFFF" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp">
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
