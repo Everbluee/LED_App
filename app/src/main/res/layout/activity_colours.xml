@@ -65,18 +65,19 @@
                 android:layout_height="match_parent"
                 android:padding="10dp">
 
+
                 <ImageView
                     android:id="@+id/colorWheel"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="228dp"
                     android:src="@drawable/color_wheel"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent" />
-
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.025" />
 
                 <ImageView
                     android:id="@+id/colorIndicator"
@@ -85,8 +86,10 @@
                     android:layout_marginStart="20dp"
                     android:src="@drawable/color_indicator"
                     app:layout_constraintBottom_toBottomOf="@id/colorWheel"
+                    app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintEnd_toEndOf="@id/colorWheel"
                     app:layout_constraintHorizontal_bias="0.468"
+                    app:layout_constraintStart_toEndOf="@+id/colorWheel"
                     app:layout_constraintStart_toStartOf="@id/colorWheel"
                     app:layout_constraintTop_toTopOf="@id/colorWheel"
                     app:layout_constraintVertical_bias="0.507" />

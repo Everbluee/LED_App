@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
@@ -51,30 +50,53 @@ class ColoursActivity : AppCompatActivity() {
         val blueButton: Button = findViewById(R.id.blueButton)
 
         colorWheel.setOnTouchListener { v, event ->
-            if (event.action == MotionEvent.ACTION_DOWN || event.action == MotionEvent.ACTION_MOVE) {
+            val centerX = colorWheel.width / 2f * 1.05
+            val centerY = colorWheel.height / 2f *1.1
+            val radius = Math.min(colorWheel.width, colorWheel.height) / 2f *0.9f
+            val touchX = event.x
+            val touchY = event.y
 
-                val imageViewCoordinates = IntArray(2)
-                colorWheel.getLocationOnScreen(imageViewCoordinates)
-                val x = event.rawX - imageViewCoordinates[0]
-                val y = event.rawY - imageViewCoordinates[1]
-
-                if (x >= 0 && y >= 0 && x < colorWheel.width && y < colorWheel.height) {
-                    val bitmap = (colorWheel.drawable as BitmapDrawable).bitmap
-                    val scaledX = (x * (bitmap.width.toFloat() / colorWheel.width)).toInt()
-                    val scaledY = (y * (bitmap.height.toFloat() / colorWheel.height)).toInt()
-
-                    try {
-                        val pixel = bitmap.getPixel(scaledX, scaledY)
-                        val colorString = String.format("#%06X", 0xFFFFFF and pixel)
-                        selectedColorTextView.text = colorString
-                        colorDisplay.setBackgroundColor(pixel)
-                        colorIndicator.x = x - colorIndicator.width / 2
-                        colorIndicator.y = y - colorIndicator.height / 2
-                    } catch (e: IllegalArgumentException) {
-
-                    }
-                }
+            // odległość między środkiem koła a punktem dotknięcia
+            val distance = Math.sqrt(((touchX - centerX) * (touchX - centerX) + (touchY - centerY) * (touchY - centerY)).toDouble())
+            val scaledDistance = if (distance > radius) {
+                radius
+            } else {
+                distance
             }
+
+            val angle = Math.toDegrees(
+                Math.atan2(
+                    (touchY - centerY).toDouble(),
+                    (touchX - centerX)
+                )
+            )
+
+            var adjustedAngle = angle
+            if (adjustedAngle < 0) {
+                adjustedAngle += 360
+            }
+
+            val angleInRadians = Math.toRadians(adjustedAngle)
+
+            val newX = centerX + scaledDistance.toFloat() * Math.cos(angleInRadians).toFloat()
+            val newY = centerY + scaledDistance.toFloat() * Math.sin(angleInRadians).toFloat()
+
+            colorIndicator.x = newX.toFloat() - colorIndicator.width / 2
+            colorIndicator.y = newY.toFloat() - colorIndicator.height / 2
+
+            // Przeliczanie pozycji dotknięcia na współrzędne w przeskalowanej bitmapie
+            val bitmap = (colorWheel.drawable as BitmapDrawable).bitmap
+            val scaledX = (newX * (bitmap.width.toFloat() / colorWheel.width)).toInt()
+            val scaledY = (newY * (bitmap.height.toFloat() / colorWheel.height)).toInt()
+
+            // Pobieranie koloru piksela w tym punkcie
+            val pixel = bitmap.getPixel(scaledX, scaledY)
+
+            // Wyświetlanie koloru
+            val colorString = String.format("#%06X", 0xFFFFFF and pixel)
+            selectedColorTextView.text = colorString
+            colorDisplay.setBackgroundColor(pixel)
+
             true
         }
 
