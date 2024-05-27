@@ -65,7 +65,6 @@
                 android:layout_height="match_parent"
                 android:padding="10dp">
 
-
                 <ImageView
                     android:id="@+id/colorWheel"
                     android:layout_width="match_parent"
@@ -109,42 +108,52 @@
 
                     <Button
                         android:id="@+id/redButton"
-                        style="@style/Widget.Material3.Button.Icon"
                         android:layout_width="55dp"
                         android:layout_height="60dp"
                         android:layout_marginHorizontal="15dp"
                         android:backgroundTint="@color/button"
-                        android:contentDescription="@string/red"
                         android:padding="0dp"
-                        app:icon="@drawable/ic_r"
+                        android:text="R"
+                        android:fontFamily="@font/alata"
+                        android:textSize="20sp"
                         app:iconGravity="textTop"
                         app:iconPadding="0dp"
                         app:iconSize="30dp" />
 
                     <Button
                         android:id="@+id/greenButton"
-                        style="@style/Widget.Material3.Button.Icon"
+                        android:text="G"
                         android:layout_width="55dp"
                         android:layout_height="60dp"
                         android:layout_marginHorizontal="15dp"
                         android:backgroundTint="@color/button"
-                        android:contentDescription="@string/green"
                         android:padding="0dp"
-                        app:icon="@drawable/ic_g"
+                        android:textSize="20sp"
                         app:iconGravity="textTop"
                         app:iconPadding="0dp"
                         app:iconSize="30dp" />
 
                     <Button
                         android:id="@+id/blueButton"
-                        style="@style/Widget.Material3.Button.Icon"
                         android:layout_width="55dp"
                         android:layout_height="60dp"
                         android:layout_marginHorizontal="15dp"
                         android:backgroundTint="@color/button"
-                        android:contentDescription="@string/blue"
+                        android:text="B"
+                        android:textSize="20sp"
                         android:padding="0dp"
-                        app:icon="@drawable/ic_b"
+                        app:iconGravity="textTop"
+                        app:iconPadding="0dp"
+                        app:iconSize="30dp" />
+                    <Button
+                        android:id="@+id/whiteButton"
+                        android:layout_width="55dp"
+                        android:layout_height="60dp"
+                        android:layout_marginHorizontal="15dp"
+                        android:backgroundTint="@color/button"
+                        android:text="W"
+                        android:textSize="20sp"
+                        android:padding="0dp"
                         app:iconGravity="textTop"
                         app:iconPadding="0dp"
                         app:iconSize="30dp" />

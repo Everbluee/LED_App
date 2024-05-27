@@ -48,7 +48,7 @@ class ColoursActivity : AppCompatActivity() {
         val redButton: Button = findViewById(R.id.redButton)
         val greenButton: Button = findViewById(R.id.greenButton)
         val blueButton: Button = findViewById(R.id.blueButton)
-
+        val whiteButton: Button = findViewById(R.id.whiteButton)
         colorWheel.setOnTouchListener { v, event ->
             val centerX = colorWheel.width / 2f * 1.05
             val centerY = colorWheel.height / 2f *1.1
@@ -104,13 +104,16 @@ class ColoursActivity : AppCompatActivity() {
             val color = 0xFFFF0000.toInt()
             updateSelectedColor(color)
         }
-
         greenButton.setOnClickListener {
             val color = 0xFF00FF00.toInt()
             updateSelectedColor(color)
         }
         blueButton.setOnClickListener {
             val color =  0xFF0000FF.toInt()
+            updateSelectedColor(color)
+        }
+        whiteButton.setOnClickListener {
+            val color = 0xFFFFFFFF.toInt()
             updateSelectedColor(color)
         }
         backPress.setOnClickListener {
