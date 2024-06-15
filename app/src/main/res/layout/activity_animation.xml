@@ -50,7 +50,7 @@
                     android:fontFamily="@font/alata"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="@string/obecna_animacja"
+                    android:text="@string/wybierz_animacje"
                     android:textColor="@color/button"
                     android:textSize="25sp" />
             </LinearLayout>
@@ -76,7 +76,7 @@
 
                         <androidx.cardview.widget.CardView
                             android:layout_width="150dp"
-                            android:layout_height="200dp"
+                            android:layout_height="80dp"
                             android:layout_margin="15dp"
                             app:cardBackgroundColor="@color/card_background"
                             app:cardElevation="0dp"
@@ -90,11 +90,11 @@
                                 android:layout_height="match_parent"
                                 android:padding="10dp">
 
-                                <TextView
+                                <Button
                                     android:id="@+id/animFirst"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:background="@color/white"
+                                    android:backgroundTint="@color/white"
                                     android:fontFamily="@font/alata"
                                     android:padding="10dp"
                                     android:text="@string/animacja_1"
@@ -108,7 +108,7 @@
 
                         <androidx.cardview.widget.CardView
                             android:layout_width="150dp"
-                            android:layout_height="200dp"
+                            android:layout_height="80dp"
                             android:layout_margin="15dp"
                             app:cardBackgroundColor="@color/card_background"
                             app:cardElevation="0dp"
@@ -122,11 +122,11 @@
                                 android:layout_height="match_parent"
                                 android:padding="10dp">
 
-                                <TextView
+                                <Button
                                     android:id="@+id/animSecond"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:background="@color/white"
+                                    android:backgroundTint="@color/white"
                                     android:fontFamily="@font/alata"
                                     android:padding="10dp"
                                     android:text="@string/animacja_2"
@@ -140,7 +140,7 @@
 
                         <androidx.cardview.widget.CardView
                             android:layout_width="150dp"
-                            android:layout_height="200dp"
+                            android:layout_height="80dp"
                             android:layout_margin="15dp"
                             app:cardBackgroundColor="@color/card_background"
                             app:cardElevation="0dp"
@@ -154,11 +154,11 @@
                                 android:layout_height="match_parent"
                                 android:padding="10dp">
 
-                                <TextView
+                                <Button
                                     android:id="@+id/animThird"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:background="@color/white"
+                                    android:backgroundTint="@color/white"
                                     android:fontFamily="@font/alata"
                                     android:padding="10dp"
                                     android:text="@string/animacja_3"
@@ -172,7 +172,7 @@
 
                         <androidx.cardview.widget.CardView
                             android:layout_width="150dp"
-                            android:layout_height="200dp"
+                            android:layout_height="80dp"
                             android:layout_margin="15dp"
                             app:cardBackgroundColor="@color/card_background"
                             app:cardElevation="0dp"
@@ -186,11 +186,11 @@
                                 android:layout_height="match_parent"
                                 android:padding="10dp">
 
-                                <TextView
+                                <Button
                                     android:id="@+id/animFourth"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:background="@color/white"
+                                    android:backgroundTint="@color/white"
                                     android:fontFamily="@font/alata"
                                     android:padding="10dp"
                                     android:text="@string/animacja_4"
@@ -204,7 +204,7 @@
 
                         <androidx.cardview.widget.CardView
                             android:layout_width="150dp"
-                            android:layout_height="200dp"
+                            android:layout_height="80dp"
                             android:layout_margin="15dp"
                             app:cardBackgroundColor="@color/card_background"
                             app:cardElevation="0dp"
@@ -218,11 +218,11 @@
                                 android:layout_height="match_parent"
                                 android:padding="10dp">
 
-                                <TextView
+                                <Button
                                     android:id="@+id/animFifth"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:background="@color/white"
+                                    android:backgroundTint="@color/white"
                                     android:fontFamily="@font/alata"
                                     android:padding="10dp"
                                     android:text="@string/animacja_5"
@@ -236,7 +236,7 @@
 
                         <androidx.cardview.widget.CardView
                             android:layout_width="150dp"
-                            android:layout_height="200dp"
+                            android:layout_height="80dp"
                             android:layout_margin="15dp"
                             app:cardBackgroundColor="@color/card_background"
                             app:cardElevation="0dp"
@@ -250,11 +250,11 @@
                                 android:layout_height="match_parent"
                                 android:padding="10dp">
 
-                                <TextView
+                                <Button
                                     android:id="@+id/animSixth"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:background="@color/white"
+                                    android:backgroundTint="@color/white"
                                     android:fontFamily="@font/alata"
                                     android:padding="10dp"
                                     android:text="@string/animacja_6"

@@ -2,6 +2,7 @@ package com.example.led
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
+import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.drawable.BitmapDrawable
@@ -39,7 +40,6 @@ class ColoursActivity : AppCompatActivity() {
 
         LogStorage.logs.add("Przejście do ekranu ( $this )")
 
-        //Obsługa przycisku colorButton (przeniesienie do aktywności ColoursActivity)
         colorWheel = findViewById(R.id.colorWheel)
         colorIndicator = findViewById(R.id.colorIndicator)
         selectedColorTextView = findViewById(R.id.selectedColorTextView)
@@ -96,25 +96,30 @@ class ColoursActivity : AppCompatActivity() {
             val colorString = String.format("#%06X", 0xFFFFFF and pixel)
             selectedColorTextView.text = colorString
             colorDisplay.setBackgroundColor(pixel)
-
+            // Zapisz wybrany kolor do SharedPreferences
+            saveSelectedColorToPreferences(pixel)
             true
         }
 
         redButton.setOnClickListener {
             val color = 0xFFFF0000.toInt()
             updateSelectedColor(color)
+            saveSelectedColorToPreferences(color)
         }
         greenButton.setOnClickListener {
             val color = 0xFF00FF00.toInt()
             updateSelectedColor(color)
+            saveSelectedColorToPreferences(color)
         }
         blueButton.setOnClickListener {
             val color =  0xFF0000FF.toInt()
             updateSelectedColor(color)
+            saveSelectedColorToPreferences(color)
         }
         whiteButton.setOnClickListener {
             val color = 0xFFFFFFFF.toInt()
             updateSelectedColor(color)
+            saveSelectedColorToPreferences(color)
         }
         backPress.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
@@ -126,6 +131,13 @@ class ColoursActivity : AppCompatActivity() {
         val colorString = String.format("#%06X", 0xFFFFFF and color)
         selectedColorTextView.text = colorString
         colorDisplay.setBackgroundColor(color)
+    }
+    private fun saveSelectedColorToPreferences(color: Int) {
+        val sharedPref = getSharedPreferences("LED_PREFERENCES", Context.MODE_PRIVATE)
+        with (sharedPref.edit()) {
+            putInt("SELECTED_COLOR", color)
+            apply()
+        }
     }
 
     override fun onResume() {

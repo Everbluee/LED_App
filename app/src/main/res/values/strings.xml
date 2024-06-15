@@ -14,7 +14,7 @@
     <string name="animacja_4">Animacja 4</string>
     <string name="animacja_5">Animacja 5</string>
     <string name="animacja_6">Animacja 6</string>
-    <string name="obecna_animacja">Obecna animacja:</string>
+    <string name="wybierz_animacje">Wybierz animację:</string>
     <string name="wybierz_kolor">Wybierz kolor:</string>
     <string name="info">Info</string>
     <string name="opis">Aplikacja do sterowania matrycą LED</string>
