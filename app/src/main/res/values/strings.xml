@@ -25,6 +25,7 @@
     <string name="red">red:</string>
     <string name="green">green:</string>
     <string name="blue">blue:</string>
+    <string name="disconnect_device">Rozłącz z urządzeniem</string>
     <string name="wyslij_animacje">Wyślij animację:</string>
     <string name="R">R</string>
     <string name="G">G</string>
