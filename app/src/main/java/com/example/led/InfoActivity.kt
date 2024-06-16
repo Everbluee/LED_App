@@ -39,6 +39,7 @@ class InfoActivity : AppCompatActivity(){
         backButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+            //finish()
         }
 
         // Inicjalizacja RecyclerView
