@@ -14,6 +14,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -24,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.transition.Visibility
 import kotlinx.coroutines.*
 import java.io.IOException
 import java.util.UUID
@@ -118,12 +120,18 @@ class MainActivity : AppCompatActivity() {
             LogStorage.logs.add("Łączenie z urządzeniem Bluetooth... ( $this )")
 
             showBluetoothDevicesDialog()
+            if (::bluetoothSocket.isInitialized && bluetoothSocket.isConnected) {
+                bluetoothSocket.close()
+                bluetoothCoroutineScope.cancel()
+                connectButton.text = getString(R.string.connect_device)
+            }
         }
         disconnectButton = findViewById(R.id.disconnectButton)
         disconnectButton.setOnClickListener {
             if (::bluetoothSocket.isInitialized && bluetoothSocket.isConnected) {
                 bluetoothSocket.close()
                 bluetoothCoroutineScope.cancel()
+                disconnectButton.visibility = View.INVISIBLE
             }
         }
 
@@ -326,6 +334,8 @@ class MainActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
         }
+        disconnectButton.visibility = View.VISIBLE
+        connectButton.text = getString(R.string.disconnect_device)
     }
 
     // Metoda do wysyłania danych przez Bluetooth
