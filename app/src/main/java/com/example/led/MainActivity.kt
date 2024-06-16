@@ -10,6 +10,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -21,7 +22,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.util.UUID
 
@@ -47,7 +52,8 @@ class MainActivity : AppCompatActivity() {
 
     // UUID do nawiązywania połączenia z mikrokontrolerem
     private val deviceUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
-
+    private val REQUEST_ANIMATION = 101
+    private val REQUEST_COLOR = 102
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -86,12 +92,12 @@ class MainActivity : AppCompatActivity() {
         //Obsługa przycisku colorButton (przeniesienie do aktywności ColoursActivity)
         colourButton = findViewById(R.id.colorButton)
         colourButton.setOnClickListener {
-            startActivity(intentColour)
+            startActivityForResult(intentColour, REQUEST_COLOR)
         }
         //Obsługa przycisku animButton (przeniesienie do aktywności AnimationActivity)
         animButton = findViewById(R.id.animButton)
         animButton.setOnClickListener {
-            startActivity(intentAnimation)
+            startActivityForResult(intentAnimation, REQUEST_ANIMATION)
         }
         //Obsługa przycisku infoButton (przeniesienie do aktywności InfoActivity)
         infoButton = findViewById(R.id.infoButton)
@@ -285,4 +291,33 @@ class MainActivity : AppCompatActivity() {
             Log.i("BluetoothDestroy", "Bluetooth Socket nie może być zamknięta")
         }
     }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_ANIMATION && resultCode == Activity.RESULT_OK) {
+            val animationData = data?.getStringExtra("animation_data")
+            animationData?.let {
+                //Log.d("MainActivity", "Received animation data: $animationData")
+                processAnimationData(animationData)
+            }
+        }
+        if (requestCode == REQUEST_COLOR && resultCode == Activity.RESULT_OK) {
+            val selectedColor = data?.getIntExtra("SELECTED_COLOR", Color.WHITE)
+            selectedColor?.let {
+                processSelectedColor(it)
+               // Toast.makeText(this, "Received color: $selectedColor", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun processSelectedColor(color: Int) {
+        val selectedColor = String.format("#%06X", 0xFFFFFF and color)
+        Toast.makeText(this, "Received color data: $selectedColor", Toast.LENGTH_SHORT).show()
+        sendData(selectedColor)
+    }
+    private fun processAnimationData(animationData: String) {
+        Log.d("MainActivity", "Received animation data: $animationData")
+        Toast.makeText(this, "Received animation data: $animationData", Toast.LENGTH_SHORT).show()
+        sendData(animationData)
+    }
+
 }

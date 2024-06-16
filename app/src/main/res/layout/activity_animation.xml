@@ -75,7 +75,7 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <androidx.cardview.widget.CardView
-                            android:layout_width="150dp"
+                            android:layout_width="160dp"
                             android:layout_height="80dp"
                             android:layout_margin="15dp"
                             app:cardBackgroundColor="@color/card_background"
@@ -92,7 +92,7 @@
 
                                 <Button
                                     android:id="@+id/animFirst"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="140dp"
                                     android:layout_height="wrap_content"
                                     android:backgroundTint="@color/white"
                                     android:fontFamily="@font/alata"
@@ -107,7 +107,7 @@
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
-                            android:layout_width="150dp"
+                            android:layout_width="160dp"
                             android:layout_height="80dp"
                             android:layout_margin="15dp"
                             app:cardBackgroundColor="@color/card_background"
@@ -124,7 +124,7 @@
 
                                 <Button
                                     android:id="@+id/animSecond"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="140dp"
                                     android:layout_height="wrap_content"
                                     android:backgroundTint="@color/white"
                                     android:fontFamily="@font/alata"
@@ -139,7 +139,7 @@
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
-                            android:layout_width="150dp"
+                            android:layout_width="160dp"
                             android:layout_height="80dp"
                             android:layout_margin="15dp"
                             app:cardBackgroundColor="@color/card_background"
@@ -156,7 +156,7 @@
 
                                 <Button
                                     android:id="@+id/animThird"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="140dp"
                                     android:layout_height="wrap_content"
                                     android:backgroundTint="@color/white"
                                     android:fontFamily="@font/alata"
@@ -171,7 +171,7 @@
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
-                            android:layout_width="150dp"
+                            android:layout_width="160dp"
                             android:layout_height="80dp"
                             android:layout_margin="15dp"
                             app:cardBackgroundColor="@color/card_background"
@@ -188,7 +188,7 @@
 
                                 <Button
                                     android:id="@+id/animFourth"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="140dp"
                                     android:layout_height="wrap_content"
                                     android:backgroundTint="@color/white"
                                     android:fontFamily="@font/alata"
@@ -203,7 +203,7 @@
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
-                            android:layout_width="150dp"
+                            android:layout_width="160dp"
                             android:layout_height="80dp"
                             android:layout_margin="15dp"
                             app:cardBackgroundColor="@color/card_background"
@@ -220,7 +220,7 @@
 
                                 <Button
                                     android:id="@+id/animFifth"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="140dp"
                                     android:layout_height="wrap_content"
                                     android:backgroundTint="@color/white"
                                     android:fontFamily="@font/alata"
@@ -235,7 +235,7 @@
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
-                            android:layout_width="150dp"
+                            android:layout_width="160dp"
                             android:layout_height="80dp"
                             android:layout_margin="15dp"
                             app:cardBackgroundColor="@color/card_background"
@@ -252,7 +252,7 @@
 
                                 <Button
                                     android:id="@+id/animSixth"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="140dp"
                                     android:layout_height="wrap_content"
                                     android:backgroundTint="@color/white"
                                     android:fontFamily="@font/alata"

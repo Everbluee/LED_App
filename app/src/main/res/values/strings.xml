@@ -8,12 +8,12 @@
     <string name="kolory">Kolory</string>
     <string name="animacjeTitle">Animacje</string>
     <string name="backpressbutton">BackPressButton</string>
-    <string name="animacja_1">Animacja 1</string>
-    <string name="animacja_2">Animacja 2</string>
-    <string name="animacja_3">Animacja 3</string>
-    <string name="animacja_4">Animacja 4</string>
-    <string name="animacja_5">Animacja 5</string>
-    <string name="animacja_6">Animacja 6</string>
+    <string name="animacja_1">Chess board</string>
+    <string name="animacja_2">Flash board</string>
+    <string name="animacja_3">Running pixel</string>
+    <string name="animacja_4">Randomizer</string>
+    <string name="animacja_5">Ilusion</string>
+    <string name="animacja_6">The flash</string>
     <string name="wybierz_animacje">Wybierz animację:</string>
     <string name="wybierz_kolor">Wybierz kolor:</string>
     <string name="info">Info</string>
@@ -25,4 +25,10 @@
     <string name="red">red:</string>
     <string name="green">green:</string>
     <string name="blue">blue:</string>
+    <string name="wyslij_animacje">Wyślij animację:</string>
+    <string name="R">R</string>
+    <string name="G">G</string>
+    <string name="B">B</string>
+    <string name="W">W</string>
+    <string name="wyslij_kolor">Wyślij kolor</string>
 </resources>

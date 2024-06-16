@@ -1,5 +1,6 @@
 package com.example.led
 
+import android.app.Activity
 import android.app.Dialog
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
@@ -48,7 +49,6 @@ class AnimationActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
-
         animFirst = findViewById(R.id.animFirst)
         animSecond = findViewById(R.id.animSecond)
         animThird = findViewById(R.id.animThird)
@@ -57,27 +57,33 @@ class AnimationActivity : AppCompatActivity() {
         animSixth = findViewById(R.id.animSixth)
 
         animFirst.setOnClickListener {
-            showAnimationDialog(::animateFirst)
+            showAnimationDialog(::animateFirst,"Animation 1 data" )
         }
         animSecond.setOnClickListener {
-            showAnimationDialog(::animateSecond)
+            showAnimationDialog(::animateSecond, "Animation 2 data")
         }
         animThird.setOnClickListener {
-            showAnimationDialog(::animateThird)
+            showAnimationDialog(::animateThird, "Animation 3 data")
         }
         animFourth.setOnClickListener {
-            showAnimationDialog(::animateFourth)
+            showAnimationDialog(::animateFourth, "Animation 4 data")
         }
         animFifth.setOnClickListener {
-            showAnimationDialog(::animateFifth)
+            showAnimationDialog(::animateFifth, "Animation 5 data")
         }
         animSixth.setOnClickListener {
-            showAnimationDialog(::animateSixth)
+            showAnimationDialog(::animateSixth, "Animation 6 data")
         }
         sharedPref = getSharedPreferences("LED_PREFERENCES", Context.MODE_PRIVATE)
     }
+    private fun handleAnimationButtonClick(animationData: String) {
+        val resultIntent = Intent()
+        resultIntent.putExtra("animation_data", animationData)
+        setResult(Activity.RESULT_OK, resultIntent)
+        finish()
+    }
 
-    private fun showAnimationDialog(animation: (List<ImageView>) -> Unit) {
+    private fun showAnimationDialog(animation: (List<ImageView>) -> Unit, animationData: String) {
         val dialog = Dialog(this)
         val view = LayoutInflater.from(this).inflate(R.layout.animation_popup, null)
         dialog.setContentView(view)
@@ -89,7 +95,11 @@ class AnimationActivity : AppCompatActivity() {
         dialog.setOnDismissListener {
             rootView.alpha = 1.0f
         }
+        val sendDataButton: Button = view.findViewById(R.id.sendDataButton)
 
+        sendDataButton.setOnClickListener {
+            handleAnimationButtonClick(animationData)
+        }
         val ledMatrix: GridLayout = view.findViewById(R.id.led_matrix)
         val sizePx = (LED_SIZE_DP * resources.displayMetrics.density).toInt()
         val leds = ArrayList<ImageView>()
@@ -221,7 +231,7 @@ private fun animateFourth(leds: List<ImageView>) {
 private fun animateFifth(leds: List<ImageView>) {
     val handler = android.os.Handler()
     val animationDuration = 500L
-    val jumpInterval = 100L // Czas trwania jednego przeskoku (w milisekundach)
+    val jumpInterval = 100L // Czas trwania jednego przeskoku
     val selectedColor = sharedPref.getInt("SELECTED_COLOR", Color.WHITE)
     val matrixSize =16
     var currentSize = matrixSize
