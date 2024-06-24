@@ -58,22 +58,22 @@ class AnimationActivity : AppCompatActivity() {
         animSixth = findViewById(R.id.animSixth)
 
         animFirst.setOnClickListener {
-            showAnimationDialog(::animateFirst,"Animation 1 data" )
+            showAnimationDialog(::animateFirst,"A" )
         }
         animSecond.setOnClickListener {
-            showAnimationDialog(::animateSecond, "Animation 2 data")
+            showAnimationDialog(::animateSecond, "B")
         }
         animThird.setOnClickListener {
-            showAnimationDialog(::animateThird, "Animation 3 data")
+            showAnimationDialog(::animateThird, "C")
         }
         animFourth.setOnClickListener {
-            showAnimationDialog(::animateFourth, "Animation 4 data")
+            showAnimationDialog(::animateFourth, "D")
         }
         animFifth.setOnClickListener {
-            showAnimationDialog(::animateFifth, "Animation 5 data")
+            showAnimationDialog(::animateFifth, "E")
         }
         animSixth.setOnClickListener {
-            showAnimationDialog(::animateSixth, "Animation 6 data")
+            showAnimationDialog(::animateSixth, "F")
         }
         sharedPref = getSharedPreferences("LED_PREFERENCES", Context.MODE_PRIVATE)
     }

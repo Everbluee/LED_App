@@ -444,8 +444,24 @@ class MainActivity : AppCompatActivity() {
 
     private fun processSelectedColor(color: Int) {
         val selectedColor = String.format("#%06X", 0xFFFFFF and color)
-        Toast.makeText(this, "Received color data: $selectedColor", Toast.LENGTH_SHORT).show()
-        sendData(selectedColor)
+        var rgb = ""
+        rgb += if ((color shr 16 and 0xFF).toString() == "0")
+            "000"
+        else {
+            (color shr 16 and 0xFF).toString()
+        }
+        rgb += if ((color shr 8 and 0xFF).toString() == "0")
+            "000"
+        else {
+            (color shr 8 and 0xFF).toString()
+        }
+        rgb += if ((color and 0xFF).toString() == "0")
+            "000"
+        else {
+            (color and 0xFF).toString()
+        }
+        Toast.makeText(this, "Received color data: $selectedColor ($rgb)", Toast.LENGTH_SHORT).show()
+        sendData(rgb)
     }
     private fun processAnimationData(animationData: String) {
         Log.d("MainActivity", "Received animation data: $animationData")
